@@ -1,0 +1,26 @@
+-----------------------------------------------------------------
+		Empresa AIVO Systems Incorporated
+
+	NIT.180903
+	Dirección: Bo.Carlos Fonseca.
+	Telefono: 2255-2020
+	NUMERO DE FACTURA N° 1
+=================================================================
+Fecha y Hora:       17/05/2023 | 02:46:42
+Cliente:            Richard
+Documento:          124
+Dirección           Las Jaguitas
+Numero:             12341
+=================================================================
+Producto       Cantidad    Precio   Subtotal
+_________________________________________________________________
+Chocolates	2	30	60.0	
+Leche 	1	20	20.0	
+
+=================================================================
+Subtotal 80.00
+- Descuento del 20%:  16.00
+IVA 15%: 12.00
+TOTAL: 76.00
+================== MUCHAS GRACIAS POR SU COMPRA =================
+===================PROGRAMACION 2 - 2M1-S========================

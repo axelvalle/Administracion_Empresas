@@ -1,0 +1,25 @@
+-----------------------------------------------------------------
+		Empresa AIVO Systems Incorporated
+
+	NIT.180903
+	Dirección: Bo.Carlos Fonseca.
+	Telefono: 2255-2020
+	NUMERO DE FACTURA N° 8
+=================================================================
+Fecha y Hora:       21/04/2023 | 01:24:29
+Cliente:            asda
+Documento:          a
+Dirección           asdad
+Numero:             adsasd
+=================================================================
+Producto       Cantidad    Precio   Subtotal
+_________________________________________________________________
+Leche 	36	20	720.0	
+
+=================================================================
+Subtotal 720.00
+- Descuento del 0%:  0.00
+IVA 15%: 108.00
+TOTAL: 828.00
+================== MUCHAS GRACIAS POR SU COMPRA =================
+===================PROGRAMACION 2 - 2M1-S========================
