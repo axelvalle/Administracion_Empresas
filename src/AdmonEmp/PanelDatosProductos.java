@@ -15,7 +15,7 @@ public class PanelDatosProductos extends JPanel {
     DefaultTableModel modeloProd;
     JTable tablaProd;
     JButton btnAgregar,btnLimpiar,btnEliminar,btnGuardar;
-    JComboBox cbProv;
+    JComboBox<String> cbProv;
     
     public PanelDatosProductos() {
         this.setLayout(null);
@@ -41,7 +41,7 @@ public class PanelDatosProductos extends JPanel {
         lblProv.setFont(comicSansFont);
         this.add(lblProv);
         
-        cbProv = new JComboBox();
+        cbProv = new JComboBox<>();
         cbProv.addItem("Cargill Centroamérica");
         cbProv.addItem("Alimentos Prosalud");
         cbProv.addItem("Grupo M");
@@ -138,20 +138,24 @@ public class PanelDatosProductos extends JPanel {
     
     
     public void agregarDatos(){
-    String datos[]= new String[5];
+    String datos[]= new String[4]; // Cambiado a 4 porque solo hay 4 columnas
     datos[0] = txtProducto.getText();
     datos[1] = (String) cbProv.getSelectedItem();
-    datos[2] = txtPrecio.getText();
-    // Validación de txtcant para asegurarnos de que es un número
-        if (!txtPrecio.getText().matches("\\d+(\\.\\d{1,2})?")||!txtCantidad.getText().matches("\\d+(\\.\\d{1,2})?")) {
-        JOptionPane.showMessageDialog(null, " debe ser un número válido con un máximo de dos decimales.", "Error de PRECIO", JOptionPane.ERROR_MESSAGE);
+    // Validación de txtPrecio y txtCantidad para asegurarnos de que son números válidos
+    if (!txtPrecio.getText().matches("\\d+(\\.\\d{1,2})?")) {
+        JOptionPane.showMessageDialog(null, "El precio debe ser un número válido con un máximo de dos decimales.", "Error de PRECIO", JOptionPane.ERROR_MESSAGE);
         return;
     }
+    if (!txtCantidad.getText().matches("\\d+(\\.\\d{1,2})?")) {
+        JOptionPane.showMessageDialog(null, "La cantidad debe ser un número válido con un máximo de dos decimales.", "Error de CANTIDAD", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    datos[2] = txtPrecio.getText();
     datos[3] = txtCantidad.getText();
     modeloProd.addRow(datos);
 
     JOptionPane.showMessageDialog(null, "La acción se realizó con éxito.","AGREGACION EXITOSA",JOptionPane.INFORMATION_MESSAGE);
-    }
+}
    
     
     public void limpiardatos() {

@@ -21,7 +21,7 @@ public class PanelDatosEmpleados extends JPanel {
         JTextField txtNomb,txtEdad,txtSalario,txtcodigo;
         DefaultTableModel modeloEmpleados;
         JTable tablaEmpleados;
-        JComboBox combo;
+        JComboBox<String> combo;
         JButton btnAgregarDatos,btnEliminar,btnLimpiarDatos,btnPlanilla;
         Font comicSansFont;
         
@@ -98,7 +98,7 @@ public PanelDatosEmpleados(){
     lblCargo.setFont(comicSansFont);
     this.add(lblCargo);
     
-    combo = new JComboBox();
+    combo = new JComboBox<>();
     combo.addItem("Secretaria");
     combo.addItem("Contador");
     combo.addItem("Analista");

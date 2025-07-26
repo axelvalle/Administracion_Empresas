@@ -24,7 +24,6 @@ public final class Interfaz extends JFrame{
     JMenu mnufile,mnutool,mnuprocess,mnusettings;
     JMenuItem jmnguardar,jmnsalir,derechos,terms,avisolegal,jmnfacturacion,jmnlistadofac,jmnInventario;
     JLabel lblfecha,titulo,subtitulo,logo;
-    String fechacadena;
     JTabbedPane pestañas;
     Font comicSansFont;
     JDesktopPane desk;

@@ -17,8 +17,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Gateway
  */
 //PROYECTO DE PROGRAMACION 2, HECHO POR AXEL VALLE ING DE SISTEMAS
-public class Facturacion extends JInternalFrame{
-    JComboBox cbProductos;
+public final class Facturacion extends JInternalFrame{
+    JComboBox<String> cbProductos;
     JTextField txtNombre, txtTelefono, txtDocumento, txtDireccion, txtPrecio, txtNombreProducto, txtCantidad, txtDescuento;
     JLabel lblTitulo, lblProductos, lblPrecio, lblNombProducto, lblCantidad, lblFecha, contenedorDeFecha, lblSubtotal, lblNumeroSubtotal, lblDescuento, lblIVA, lblNumIVA, lblTotal, lblNumTotal, lblNumDesc;
     JButton btnAgregar, btnEliminar, btnFacturar, btnLimpiar, btnCalcular;
@@ -27,13 +27,15 @@ public class Facturacion extends JInternalFrame{
     JTable tablaFactura;
     SpinnerNumberModel spModel;
     JSpinner spNumFactura;
-    PanelDatosProductos panelP;
     public Facturacion(){
         this.add(new Panelcliente());
         this.add(new PanelFyF());
         this.add(new PanelproductosF());
         this.add(new Panelbotones());
-        this.add(new Paneltotal());
+        Paneltotal panelTotal = new Paneltotal();
+        this.add(panelTotal);
+        // Add the ItemListener after the Paneltotal is fully constructed
+        panelTotal.chkDescuento.addItemListener(panelTotal);
         componentes();
     }
     public void componentes(){
@@ -51,9 +53,7 @@ public class Facturacion extends JInternalFrame{
         lblTitulo.setIcon(iconoEscalado);
         lblTitulo.setFont(new Font("Arial Black", Font.BOLD, 30));
         lblTitulo.setForeground(Color.white);
-        this.add(lblTitulo);
-        panelP = new PanelDatosProductos();
-        
+        this.add(lblTitulo);        
         modeloFactura = new DefaultTableModel();
         modeloFactura.addColumn("Producto");
         modeloFactura.addColumn("Cantidad");
@@ -177,7 +177,9 @@ public class Facturacion extends JInternalFrame{
                  bf.write("Dirección           "+txtDireccion.getText()+"\n");
                  bf.write("Numero:             "+txtTelefono.getText()+"\n");
                  bf.write("=================================================================\n");
-                 bf.write("Producto"+"       "+"Cantidad"+"    "+"Precio"+"   "+"Subtotal"+"\n");
+                                 bf.write("""
+                Producto       Cantidad    Precio   Subtotal
+                """);
                  bf.write("_________________________________________________________________\n");
                 //buscar datos en la tabla e imprimirlos
                   for(int fila=0;fila<tablaFactura.getRowCount();fila++){
@@ -209,26 +211,22 @@ public class Facturacion extends JInternalFrame{
             try {
                 // Abrir el archivo y crear los objetos FileReader y BufferedReader
                 File f = new File("ProductosAgregados.txt");
-                FileReader fr = new FileReader(f);
-                BufferedReader bf = new BufferedReader(fr);               
-                // Leer el archivo línea por línea y buscar el elemento seleccionado
-                String cadena;
-                while ((cadena = bf.readLine()) != null) {
-                    String[] registro = cadena.split(",");
-                    if (registro[0].equals(itemcbproducto)) {
-                        // Si se encuentra el elemento seleccionado, actualizar los valores de los campos de texto
-                        txtNombreProducto.setText(registro[0]);
-                        txtPrecio.setText(registro[2]);
+                try (FileReader fr = new FileReader(f); BufferedReader bf = new BufferedReader(fr)) {
+                    // Leer el archivo línea por línea y buscar el elemento seleccionado
+                    String cadena;
+                    while ((cadena = bf.readLine()) != null) {
+                        String[] registro = cadena.split(",");
+                        if (registro[0].equals(itemcbproducto)) {
+                            // Si se encuentra el elemento seleccionado, actualizar los valores de los campos de texto
+                            txtNombreProducto.setText(registro[0]);
+                            txtPrecio.setText(registro[2]);
+                        }
                     }
+                    // Cerrar los objetos FileReader y BufferedReader
+
                 }
                 
-                // Cerrar los objetos FileReader y BufferedReader
-                bf.close();
-                fr.close();
-                
             } catch (IOException ex) {
-                
-                ex.printStackTrace();
             }            
             
 }
@@ -340,10 +338,9 @@ public class Facturacion extends JInternalFrame{
         lblProductos.setFont(P1Font);
         this.add(lblProductos);
         
-        cbProductos=new JComboBox();
+        cbProductos=new JComboBox<>();
         cbProductos.setBounds(110,15,150,30);
         cbProductos.setFont(P1Font);
-        cbProductos.addItemListener(this);
         this.add(cbProductos);
          
          
@@ -420,6 +417,8 @@ public class Facturacion extends JInternalFrame{
     }
         public class Paneltotal extends JPanel implements ItemListener{ 
 
+            public JCheckBox chkDescuento;
+
             public Paneltotal(){
                 this.setLayout(null);
                 this.setBorder(new EtchedBorder());
@@ -447,13 +446,11 @@ public class Facturacion extends JInternalFrame{
                 txtDescuento.setBounds(130,85, 40, 30);
                 this.add(txtDescuento);
                 lblNumDesc = new JLabel("0,00");
-                lblNumDesc.setBounds(180,85,150,30);
-                lblNumDesc.setFont(P2Font);
-                this.add(lblNumDesc);
                 chkDescuento = new JCheckBox("Aplicar Descuento");
                 chkDescuento.setBounds(250, 85, 150, 30);
                 chkDescuento.setBackground(Color.white);
-                chkDescuento.addItemListener(this);
+                this.add(chkDescuento);
+                chkDescuento.setBackground(Color.white);
                 this.add(chkDescuento);
                 lblIVA = new JLabel("IVA 15%");
                 lblIVA.setBounds(20, 90, 100, 100);
@@ -515,6 +512,9 @@ public class Facturacion extends JInternalFrame{
             }
         
     public class CargarDatosCB extends Thread{
+    // Este método se ejecuta cuando se inicia el hilo
+    // Se encarga de cargar los datos de los productos en el JComboBox cbProductos
+    @Override
     public void run() {      
             for (int i = cbProductos.getItemCount() - 1; i >= 0; i--) {
             cbProductos.removeItemAt(i);
@@ -538,7 +538,6 @@ public class Facturacion extends JInternalFrame{
         br.close();
         fr.close();
     } catch (IOException e) {
-        e.printStackTrace();
     }
     }            
 }
